@@ -36,7 +36,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<GymDbContext>(options =>
 {
     options.UseLazyLoadingProxies()
-        .UseNpgsql(builder.Configuration.GetConnectionString("Localhost")); // ElephantSQL Localhost
+        .UseNpgsql(builder.Configuration.GetConnectionString("ElephantSQL")); // ElephantSQL (lavam59190@laymro.com !lavam59190@laymro.com!) Localhost
 });
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<User>(options =>
