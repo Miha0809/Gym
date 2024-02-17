@@ -70,24 +70,22 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-// using (var scope = app.Services.CreateScope())
-// {
-//     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-//     var roles = new[]
-//     {
-//         nameof(Roles.Admin),
-//         nameof(Roles.Seller),
-//         nameof(Roles.Customer),
-//         nameof(Roles.Moderator)
-//     };
-//
-//     foreach (var role in roles)
-//     {
-//         if (!await roleManager.RoleExistsAsync(role))
-//         {
-//             await roleManager.CreateAsync(new IdentityRole(role));
-//         }
-//     }
-// }
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var roles = new[]
+    {
+        nameof(Roles.Seller),
+        nameof(Roles.Buyer)
+    };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+}
 
 app.Run();
