@@ -10,10 +10,10 @@ namespace Gym.Controllers;
 /// <summary>
 /// Котроллер для авторизації.
 /// </summary>
+[AllowAnonymous]
 [ApiController]
 [Route("api/[controller]")]
-[AllowAnonymous]
-public class AuthorizationController(UserManager<User> userManager, SignInManager<User> signInManager) : Controller
+public class AuthorizationController(GymDbContext context, UserManager<User> userManager, SignInManager<User> signInManager) : Controller
 {
     /// <summary>
     /// Реєстрація користувача.
@@ -23,12 +23,18 @@ public class AuthorizationController(UserManager<User> userManager, SignInManage
     /// Sample request:
     /// 
     ///     {
+    ///         "firstName": "Adam",
+    ///         "lastName": "Zawatski",
+    ///         "SubscribeMonth": 12,
     ///         "email": "seller@gmail.com",
     ///         "password": "Test1234,",
     ///         "role": "Seller"
     ///     }
     ///
     ///     {
+    ///         "firstName": "Adam",
+    ///         "lastName": "Zawatski",
+    ///         "SubscribeMonth": 1,
     ///         "email": "buyer@gmail.com",
     ///         "password": "Test1234,",
     ///         "role": "Buyer"
@@ -41,13 +47,23 @@ public class AuthorizationController(UserManager<User> userManager, SignInManage
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
         User user = null;
-        
+
         if (ModelState.IsValid)
         {
+            var sub = new Subscription()
+            {
+                End = DateTime.UtcNow.AddMonths(registerDto.SubscribeMonth).ToShortDateString()
+            };
+
+            await context.Subscriptions.AddAsync(sub);
+
             user = new User
             {
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
                 UserName = registerDto.Email,
-                Email = registerDto.Email
+                Email = registerDto.Email,
+                Subscription = sub
             };
 
             var result = await userManager.CreateAsync(user, registerDto.Password);
@@ -55,13 +71,15 @@ public class AuthorizationController(UserManager<User> userManager, SignInManage
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(user, registerDto.Role);
+                await context.SaveChangesAsync();
+                
                 return Ok("User registered successfully.");
             }
-            
+
             return BadRequest(result.Errors);
         }
 
-        
+
         return Ok(user);
     }
 
