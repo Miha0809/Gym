@@ -36,17 +36,17 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<GymDbContext>(options =>
 {
     options.UseLazyLoadingProxies()
-        .UseNpgsql(builder.Configuration.GetConnectionString("ElephantSQL")); // ElephantSQL (lavam59190@laymro.com !lavam59190@laymro.com!) Localhost
+        .UseNpgsql(builder.Configuration.GetConnectionString("Localhost")); // ElephantSQL (lavam59190@laymro.com !lavam59190@laymro.com!) Localhost
 });
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<User>(options =>
     {
-        
         options.SignIn.RequireConfirmedAccount = false;
         options.User.RequireUniqueEmail = true;
     })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<GymDbContext>();
+
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
