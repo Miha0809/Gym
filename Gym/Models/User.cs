@@ -5,13 +5,16 @@ namespace Gym.Models;
 
 public class User : IdentityUser
 {
+    [Key]
+    public int Id { get; set; }
+    
     [StringLength(16, MinimumLength = 2)]
     [DataType(DataType.Text)]
-    public string? FirstName { get; set; }
+    public string? Name { get; set; }
     
-    [StringLength(32, MinimumLength = 2)]
-    [DataType(DataType.Text)]
-    public string? LastName { get; set; }
+    public virtual Subscription Subscription { get; set; }
     
-    public virtual Subscription Subscription { get; set; } 
+    public virtual Address? Address { get; set; }
+    public virtual List<Image>? Images { get; set; } 
+    public virtual List<Trainer>? Trainers { get; set; }
 }
