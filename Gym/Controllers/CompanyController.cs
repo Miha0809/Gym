@@ -42,7 +42,7 @@ public class CompanyController(GymDbContext context, UserManager<User> userManag
     [HttpGet("trainers")]
     public async Task<IActionResult> GetTrainers()
     {
-        var user = await userManager.GetUsersInRoleAsync(nameof(Roles.Seller));
-        return Ok(user[0].Trainers);
+        var trainers = await userManager.GetUsersInRoleAsync($"{nameof(Roles.Trainer)}");
+        return Ok(mapper.Map<List<TrainerDto>>(trainers));
     }
 }

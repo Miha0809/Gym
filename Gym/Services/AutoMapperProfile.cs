@@ -10,6 +10,7 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<User, UserDto>();
         CreateMap<User, CompanyDto>();
+        CreateMap<User, TrainerDto>();
         CreateMap<Address, AddressDto>();
         CreateMap<Image, ImageDto>();
         CreateMap<Subscription, SubscriptionDto>();
