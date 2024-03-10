@@ -1,20 +1,24 @@
 using AutoMapper;
 using Gym.Models;
 using Gym.Models.DTOs;
-using Gym.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gym.Controllers;
 
+/// <summary>
+/// Контроллер для інформації про спортивний клуб.
+/// </summary>
+/// <param name="userManager">Менеджер користувачів.</param>
+/// <param name="mapper">Мапер об'єктів.</param>
 [ApiController]
 [Route("api/[controller]")]
 [AllowAnonymous]
-public class CompanyController(GymDbContext context, UserManager<User> userManager, IMapper mapper) : Controller
+public class CompanyController(UserManager<User> userManager, IMapper mapper) : Controller
 {
     /// <summary>
-    /// Інформація про спортивного клубу.
+    /// Інформація про спортивний клуб.
     /// </summary>
     /// <returns></returns>
     [HttpGet("company_information")]
