@@ -9,6 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Gym.Controllers;
 
+/// <summary>
+/// Контроллер для взаємодії з клієнтами.
+/// </summary>
+/// <param name="context">Контекст бази даних.</param>
+/// <param name="userManager">Менеджер користувачів.</param>
+/// <param name="mapper">Мапер об'єктів.</param>
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = $"{nameof(Roles.Seller)}")]
@@ -37,14 +43,14 @@ public class UserController(GymDbContext context, UserManager<User> userManager,
         
         if (user is not null)
         {
-            return Ok(user);
+            return Ok(mapper.Map<UserDto>(user));
         }
 
         return BadRequest("The user's email is incorrect.");
     }
 
     /// <summary>
-    /// Надати абонимент користувачу.
+    /// Надати/продовжити абонимент користувачу.
     /// </summary>
     /// <param name="emailBuyer">Електрона пошта відвідувача.</param>
     /// <param name="month">Продовжити на кількість місяців.</param>

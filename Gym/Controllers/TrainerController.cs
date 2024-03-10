@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gym.Controllers;
 
+/// <summary>
+/// Контроллер для взаємодії із тренерами.
+/// </summary>
+/// <param name="userManager">Менеджер користувачів.</param>
+/// <param name="mapper">Мапер об'єктів.</param>
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = $"{nameof(Roles.Seller)}")]
-public class TrainerController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper) : Controller
+public class TrainerController(UserManager<User> userManager, IMapper mapper) : Controller
 {
     /// <summary>
-    /// Поміняти данні тренера.
+    /// Поміняти дані тренера.
     /// </summary>
-    /// <param name="email"></param>
-    /// <param name="trainerDto"></param>
+    /// <param name="email">Мейл тренера.</param>
+    /// <param name="trainerDto">Нові дані тренера.</param>
     /// <returns></returns>
     [HttpPut("{email}")]
     public async Task<IActionResult> Change(string email, TrainerDto trainerDto)
